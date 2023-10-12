@@ -13,9 +13,11 @@ pub use config::Config;
 pub use constants::UDP_BUFFER_SIZE;
 
 use anyhow::Result;
+use base64::engine::general_purpose::STANDARD as BASE64;
+use base64::engine::Engine as _;
 use tokio::sync::{broadcast, mpsc};
-use tracing::{debug, info};
 
+use tracing::{debug, info};
 #[cfg(feature = "client")]
 mod client;
 #[cfg(feature = "client")]
@@ -27,7 +29,6 @@ mod server;
 use server::run_server;
 
 use crate::config_watcher::{ConfigChange, ConfigWatcherHandle};
-
 const DEFAULT_CURVE: KeypairType = KeypairType::X25519;
 
 fn get_str_from_keypair_type(curve: KeypairType) -> &'static str {
@@ -49,8 +50,8 @@ fn genkey(curve: Option<KeypairType>) -> Result<()> {
     );
     let keypair = builder.generate_keypair()?;
 
-    println!("Private Key:\n{}\n", base64::encode(keypair.private));
-    println!("Public Key:\n{}", base64::encode(keypair.public));
+    println!("Private Key:\n{}\n", BASE64.encode(keypair.private));
+    println!("Public Key:\n{}", BASE64.encode(&keypair.public));
     Ok(())
 }
 

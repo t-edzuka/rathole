@@ -1,12 +1,13 @@
 use anyhow::{anyhow, Result};
 use async_http_proxy::{http_connect_tokio, http_connect_tokio_with_basic_auth};
-use backoff::{backoff::Backoff, Notify};
+use backoff::backoff::Backoff;
+use backoff::Notify;
 use socket2::{SockRef, TcpKeepalive};
-use std::{future::Future, net::SocketAddr, time::Duration};
-use tokio::{
-    net::{lookup_host, TcpStream, ToSocketAddrs, UdpSocket},
-    sync::broadcast,
-};
+use std::future::Future;
+use std::net::SocketAddr;
+use std::time::Duration;
+use tokio::net::{lookup_host, TcpStream, ToSocketAddrs, UdpSocket};
+use tokio::sync::broadcast;
 use tracing::trace;
 use url::Url;
 
